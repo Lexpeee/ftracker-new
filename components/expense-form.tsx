@@ -140,7 +140,7 @@ export function ExpenseForm({
                         key={cat}
                         type="button"
                         onClick={() => field.onChange(cat)}
-                        className={`p-3 rounded-lg border-2 transition-all duration-200 flex flex-col items-center gap-1 ${
+                        className={`p-4 rounded-lg border-2 transition-all duration-200 flex flex-col items-center gap-2 ${
                           field.value === cat
                             ? "border-primary bg-primary/10"
                             : "border-border hover:border-primary/50"

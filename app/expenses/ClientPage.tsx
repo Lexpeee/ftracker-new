@@ -122,7 +122,7 @@ export default function ClientPage() {
           </div>
         </div>
 
-        <div className="rounded-md border bg-card">
+        <div className="rounded-md border glass-effect border-white/10">
           <div className="relative w-full overflow-auto">
             <table className="w-full caption-bottom text-sm">
               <thead className="[&_tr]:border-b">

@@ -72,7 +72,7 @@ export default function ClientPage() {
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
-      <div className="container max-w-4xl mx-auto px-4 py-6 space-y-6">
+      <div className="container mx-auto px-4 py-6 space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>

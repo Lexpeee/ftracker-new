@@ -25,14 +25,14 @@ export function ExpenseList({ expenses, onEdit, onDelete }: ExpenseListProps) {
   }
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-4">
       {expenses.map((expense, index) => (
         <Card
           key={expense.id}
           className="p-4 hover:shadow-md transition-all duration-200 animate-fade-in glass-effect border-white/10"
           style={{ animationDelay: `${index * 50}ms` }}
         >
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-4">
             <div
               className={`w-12 h-12 rounded-full ${getCategoryColor(
                 expense.category
