@@ -1,6 +1,9 @@
 "use client";
 
-import { useState, useEffect, FormEvent } from "react";
+import { useEffect } from "react";
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 import { Expense, CATEGORIES } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,8 +15,23 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog";
 import { getCategoryIcon } from "@/lib/utils";
+
+const formSchema = z.object({
+  amount: z
+    .string()
+    .min(1, "Amount is required")
+    .refine(
+      (val) => !isNaN(parseFloat(val)) && parseFloat(val) > 0,
+      "Amount must be greater than 0"
+    ),
+  category: z.string().min(1, "Category is required"),
+  description: z.string().optional(),
+});
+
+type FormData = z.infer<typeof formSchema>;
 
 interface ExpenseFormProps {
   open: boolean;
@@ -30,41 +48,47 @@ export function ExpenseForm({
   initialData,
   selectedDate,
 }: ExpenseFormProps) {
-  const [amount, setAmount] = useState(initialData?.amount.toString() || "");
-  const [category, setCategory] = useState(initialData?.category || "Food");
-  const [description, setDescription] = useState(initialData?.description || "");
+  const {
+    control,
+    handleSubmit,
+    reset,
+    setValue,
+    formState: { errors },
+  } = useForm<FormData>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      amount: initialData?.amount.toString() || "",
+      category: initialData?.category || "Food",
+      description: initialData?.description || "",
+    },
+  });
 
   useEffect(() => {
-    if (initialData) {
-      setAmount(initialData.amount.toString());
-      setCategory(initialData.category);
-      setDescription(initialData.description);
-    } else {
-      setAmount("");
-      setCategory("Food");
-      setDescription("");
+    if (open) {
+      if (initialData) {
+        setValue("amount", initialData.amount.toString());
+        setValue("category", initialData.category);
+        setValue("description", initialData.description);
+      } else {
+        reset({
+          amount: "",
+          category: "Food",
+          description: "",
+        });
+      }
     }
-  }, [initialData, open]);
+  }, [initialData, open, reset, setValue]);
 
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-
-    const amountNum = parseFloat(amount);
-    if (isNaN(amountNum) || amountNum <= 0) {
-      alert("Please enter a valid amount");
-      return;
-    }
-
+  const onFormSubmit = (data: FormData) => {
     onSubmit({
-      amount: amountNum,
-      category,
-      description,
+      amount: parseFloat(data.amount),
+      category: data.category,
+      description: data.description || "",
       date: selectedDate.toISOString(),
     });
-
-    setAmount("");
-    setCategory("Food");
-    setDescription("");
+    
+    // Reset handled by effect when reopening, but good to reset on success too if needed
+    // However, onOpenChange(false) will hide it, and next open will reset.
     onOpenChange(false);
   };
 
@@ -82,54 +106,78 @@ export function ExpenseForm({
           </DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="amount">Amount (₱)</Label>
-            <Input
-              id="amount"
-              type="number"
-              step="0.01"
-              placeholder="0.00"
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-              required
+            <Controller
+              name="amount"
+              control={control}
+              render={({ field }) => (
+                <Input
+                  {...field}
+                  id="amount"
+                  type="number"
+                  step="0.01"
+                  placeholder="0.00"
+                />
+              )}
             />
+            {errors.amount && (
+              <p className="text-sm text-destructive">{errors.amount.message}</p>
+            )}
           </div>
 
           <div className="space-y-2">
             <Label>Category</Label>
             <div className="grid grid-cols-4 gap-2">
-              {CATEGORIES.map((cat) => (
-                <button
-                  key={cat}
-                  type="button"
-                  onClick={() => setCategory(cat)}
-                  className={`p-3 rounded-lg border-2 transition-all duration-200 flex flex-col items-center gap-1 ${
-                    category === cat
-                      ? "border-primary bg-primary/10"
-                      : "border-border hover:border-primary/50"
-                  }`}
-                >
-                  <span className="text-2xl">{getCategoryIcon(cat)}</span>
-                  <span className="text-xs font-medium">{cat}</span>
-                </button>
-              ))}
+              <Controller
+                name="category"
+                control={control}
+                render={({ field }) => (
+                  <>
+                    {CATEGORIES.map((cat) => (
+                      <button
+                        key={cat}
+                        type="button"
+                        onClick={() => field.onChange(cat)}
+                        className={`p-3 rounded-lg border-2 transition-all duration-200 flex flex-col items-center gap-1 ${
+                          field.value === cat
+                            ? "border-primary bg-primary/10"
+                            : "border-border hover:border-primary/50"
+                        }`}
+                      >
+                        <span className="text-2xl">{getCategoryIcon(cat)}</span>
+                        <span className="text-xs font-medium">{cat}</span>
+                      </button>
+                    ))}
+                  </>
+                )}
+              />
             </div>
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="description">Description (Optional)</Label>
-            <Input
-              id="description"
-              type="text"
-              placeholder="e.g., Lunch at restaurant"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
+            <Controller
+              name="description"
+              control={control}
+              render={({ field }) => (
+                <Input
+                  {...field}
+                  id="description"
+                  type="text"
+                  placeholder="e.g., Lunch at restaurant"
+                />
+              )}
             />
           </div>
 
           <DialogFooter>
-            <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => onOpenChange(false)}
+            >
               Cancel
             </Button>
             <Button type="submit" variant="gradient">

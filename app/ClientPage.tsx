@@ -1,7 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import { useState, useEffect } from "react";
-import { Plus } from "lucide-react";
+import { Plus, List } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { DateSelector } from "@/components/date-selector";
 import { ExpenseList } from "@/components/expense-list";
@@ -110,6 +111,12 @@ export default function ClientPage() {
               <Plus className="h-4 w-4" />
               Add Expense
             </Button>
+            <Link href="/expenses">
+              <Button variant="outline" size="sm" className="gap-2">
+                <List className="h-4 w-4" />
+                View All
+              </Button>
+            </Link>
           </div>
 
           <ExpenseList
