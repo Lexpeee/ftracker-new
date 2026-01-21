@@ -10,10 +10,15 @@
     --card-foreground: 0 0% 3.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 3.9%;
-    --primary: 14 100% 57%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 0 84% 60%;
-    --secondary-foreground: 0 0% 9%;
+    
+    /* Primary: Vibrant Green */
+    --primary: 142 76% 36%;
+    --primary-foreground: 355.7 100% 97.3%;
+    
+    /* Secondary: Cyan */
+    --secondary: 189 94% 43%;
+    --secondary-foreground: 0 0% 98%;
+    
     --muted: 0 0% 96.1%;
     --muted-foreground: 0 0% 45.1%;
     --accent: 0 0% 96.1%;
@@ -22,13 +27,13 @@
     --destructive-foreground: 0 0% 98%;
     --border: 0 0% 89.8%;
     --input: 0 0% 89.8%;
-    --ring: 14 100% 57%;
+    --ring: 142 76% 36%;
     --radius: 0.5rem;
     
-    /* Custom gradient colors */
-    --gradient-start: 0 84% 60%;
-    --gradient-middle: 14 100% 57%;
-    --gradient-end: 25 95% 53%;
+    /* Custom gradient colors: Green to Cyan */
+    --gradient-start: 142 76% 36%;
+    --gradient-middle: 165 85% 40%;
+    --gradient-end: 189 94% 43%;
   }
 
   .dark {
@@ -38,10 +43,15 @@
     --card-foreground: 0 0% 98%;
     --popover: 0 0% 10%;
     --popover-foreground: 0 0% 98%;
-    --primary: 14 100% 57%;
-    --primary-foreground: 0 0% 9%;
-    --secondary: 0 84% 60%;
+    
+    /* Primary: Bright Green */
+    --primary: 142 70% 50%;
+    --primary-foreground: 144.9 80.4% 10%;
+    
+    /* Secondary: Bright Cyan */
+    --secondary: 189 80% 50%;
     --secondary-foreground: 0 0% 98%;
+    
     --muted: 0 0% 14.9%;
     --muted-foreground: 0 0% 63.9%;
     --accent: 0 0% 14.9%;
@@ -50,12 +60,12 @@
     --destructive-foreground: 0 0% 98%;
     --border: 0 0% 20%;
     --input: 0 0% 20%;
-    --ring: 14 100% 57%;
+    --ring: 142 70% 50%;
     
-    /* Custom gradient colors for dark mode */
-    --gradient-start: 0 84% 50%;
-    --gradient-middle: 14 100% 57%;
-    --gradient-end: 25 95% 53%;
+    /* Custom gradient colors for dark mode: Green to Cyan */
+    --gradient-start: 142 70% 45%;
+    --gradient-middle: 165 80% 50%;
+    --gradient-end: 189 90% 55%;
   }
 }
 
