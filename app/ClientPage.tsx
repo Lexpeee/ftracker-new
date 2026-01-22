@@ -1,9 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import { useState, useEffect } from "react";
 import { Plus, List } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { AllExpenses } from "@/components/all-expenses";
 import { DateSelector } from "@/components/date-selector";
 import { ExpenseList } from "@/components/expense-list";
 import { ExpenseForm } from "@/components/expense-form";
@@ -26,6 +26,7 @@ export default function ClientPage() {
   const [monthlyExpenses, setMonthlyExpenses] = useState<Expense[]>([]);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingExpense, setEditingExpense] = useState<Expense | undefined>();
+  const [activeTab, setActiveTab] = useState<"overview" | "all-expenses">("overview");
 
   // Load expenses on mount
   useEffect(() => {
@@ -93,38 +94,71 @@ export default function ClientPage() {
           monthlyExpenses={monthlyExpenses}
         />
 
-        {/* Expenses Section */}
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <h2 className="text-xl font-semibold">
-              Today's Expenses
-              <span className="ml-2 text-sm font-normal text-muted-foreground">
-                ({dailyExpenses.length})
-              </span>
-            </h2>
-            <Button
-              onClick={() => setIsFormOpen(true)}
-              variant="gradient"
-              size="sm"
-              className="gap-2"
-            >
-              <Plus className="h-4 w-4" />
-              Add Expense
-            </Button>
-            <Link href="/expenses">
-              <Button variant="outline" size="sm" className="gap-2">
-                <List className="h-4 w-4" />
-                View All
-              </Button>
-            </Link>
-          </div>
-
-          <ExpenseList
-            expenses={dailyExpenses}
-            onEdit={handleEditExpense}
-            onDelete={handleDeleteExpense}
-          />
+        {/* Tabs */}
+        <div className="flex space-x-1 rounded-xl bg-muted p-1">
+          <button
+            onClick={() => setActiveTab("overview")}
+            className={`w-full rounded-lg py-2.5 text-sm font-medium leading-5 ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${
+              activeTab === "overview"
+                ? "bg-background text-foreground shadow"
+                : "text-muted-foreground hover:bg-background/[0.12] hover:text-foreground"
+            }`}
+          >
+            Overview
+          </button>
+          <button
+            onClick={() => setActiveTab("all-expenses")}
+            className={`w-full rounded-lg py-2.5 text-sm font-medium leading-5 ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${
+              activeTab === "all-expenses"
+                ? "bg-background text-foreground shadow"
+                : "text-muted-foreground hover:bg-background/[0.12] hover:text-foreground"
+            }`}
+          >
+            All Expenses
+          </button>
         </div>
+
+        {/* Tab Content */}
+        {activeTab === "overview" ? (
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <h2 className="text-xl font-semibold">
+                Today's Expenses
+                <span className="ml-2 text-sm font-normal text-muted-foreground">
+                  ({dailyExpenses.length})
+                </span>
+              </h2>
+              <div className="flex gap-2">
+                <Button
+                  onClick={() => setIsFormOpen(true)}
+                  variant="gradient"
+                  size="sm"
+                  className="gap-2"
+                >
+                  <Plus className="h-4 w-4" />
+                  Add Expense
+                </Button>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="gap-2"
+                  onClick={() => setActiveTab("all-expenses")}
+                >
+                  <List className="h-4 w-4" />
+                  View All
+                </Button>
+              </div>
+            </div>
+
+            <ExpenseList
+              expenses={dailyExpenses}
+              onEdit={handleEditExpense}
+              onDelete={handleDeleteExpense}
+            />
+          </div>
+        ) : (
+          <AllExpenses />
+        )}
 
         {/* Expense Form Dialog */}
         <ExpenseForm
