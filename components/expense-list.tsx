@@ -73,6 +73,21 @@ export function ExpenseList({ expenses, onEdit, onDelete }: ExpenseListProps) {
               </div>
             </div>
           </div>
+
+          
+          {expense.subItems && expense.subItems.length > 0 && (
+            <div className="mt-4 pt-4 border-t border-border/50 pl-16">
+              <p className="text-xs text-muted-foreground mb-2">Sub-items:</p>
+              <div className="space-y-1">
+                {expense.subItems.map((item) => (
+                  <div key={item.id} className="flex justify-between text-sm">
+                    <span>{item.name}</span>
+                    <span className="text-muted-foreground">{formatCurrency(item.amount)}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </Card>
       ))}
     </div>
