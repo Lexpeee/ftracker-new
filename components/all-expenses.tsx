@@ -93,19 +93,19 @@ export function AllExpenses() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex items-start justify-between">
         <div>
-          <h2 className="text-xl font-semibold">All Expenses</h2>
-          <p className="text-sm text-muted-foreground mt-1">
+          <h2 className="text-xl font-semibold p-0">All Expenses</h2>
+          <p className="text-sm text-muted-foreground">
             View and manage your expense history
           </p>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" onClick={exportToCSV}>
+          <Button variant="outline" size="sm" onClick={exportToCSV}>
             <Download className="mr-2 h-4 w-4" />
             Export CSV
           </Button>
-          <Button variant="gradient" onClick={exportToExcel}>
+          <Button variant="gradient" size="sm" onClick={exportToExcel}>
             <Download className="mr-2 h-4 w-4" />
             Export Excel
           </Button>

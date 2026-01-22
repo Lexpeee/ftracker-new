@@ -74,16 +74,6 @@ export default function ClientPage() {
   return (
     <main className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
       <div className="container mx-auto px-4 py-6 space-y-6">
-        {/* Header */}
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold text-gradient">FinanTracker</h1>
-            <p className="text-sm text-muted-foreground mt-1">
-              Track your expenses with ease
-            </p>
-          </div>
-          <ThemeToggle />
-        </div>
 
         {/* Date Selector */}
         <DateSelector selectedDate={selectedDate} onDateChange={setSelectedDate} />
@@ -128,26 +118,15 @@ export default function ClientPage() {
                   ({dailyExpenses.length})
                 </span>
               </h2>
-              <div className="flex gap-2">
-                <Button
-                  onClick={() => setIsFormOpen(true)}
-                  variant="gradient"
-                  size="sm"
-                  className="gap-2"
-                >
-                  <Plus className="h-4 w-4" />
-                  Add Expense
-                </Button>
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  className="gap-2"
-                  onClick={() => setActiveTab("all-expenses")}
-                >
-                  <List className="h-4 w-4" />
-                  View All
-                </Button>
-              </div>
+              <Button 
+                onClick={() => setIsFormOpen(true)}
+                variant="gradient"
+                size="sm"
+                className="gap-2"
+              >
+                <Plus className="h-4 w-4" />
+                Add Expense
+              </Button>
             </div>
 
             <ExpenseList
