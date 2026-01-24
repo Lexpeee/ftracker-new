@@ -223,7 +223,9 @@ export function ExpenseForm({
           </div>
 
           {selectedCategory === 'Shopping' && 
-            <div className="space-y-4 border-t pt-4">
+            <div 
+              className="space-y-4 border-t pt-4"
+            >
               <div className="flex items-center justify-between">
                 <Label>Sub-items</Label>
                 <Button
@@ -237,7 +239,14 @@ export function ExpenseForm({
                 </Button>
               </div>
 
-              <div className="space-y-2">
+              <div 
+                className="space-y-2"
+                style={{
+                  height: '100%',
+                  maxHeight: 200,
+                  overflowY: 'auto'
+                }}
+              >
                 {fields.map((field, index) => (
                   <div key={field.id} className="flex gap-2 items-start">
                     <div className="flex-1">
